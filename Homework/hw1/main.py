@@ -1,9 +1,12 @@
+from random import randint
 # Напечатал Danila Dumbrovskiy Ivanovich
 
 # Простые переменки нужные для процесса
 
-g_u_answer = ["да", "yes", "ok", "ок"]
+g_u_answer = ["да", "yes", "ok", "ок", "конечно"]
+g_u_answer_no = ["нет", "no"]
 b_indicator_dullness = 0
+g_u_i = "Вы: "
 
 img = ''',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,r,:,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -44,7 +47,7 @@ print()
 
     
 print("Напиши мне буквы через пробел, а я тебе из него сделаю предложение: ")
-u_t_sentence_for_new_sentence = input()
+u_t_sentence_for_new_sentence = input(g_u_i)
 
 temp_arr = u_t_sentence_for_new_sentence.split(" ")
 
@@ -65,7 +68,7 @@ print("Во, я самый грамотный бот на свете")
 # Задание 1.5 - это моё задание, дополнение
 print()
 print("У меня есть некая база знаний слов, хочешь узнать какие слова подойдут под эти буквы ?")
-u_t_sentence_for_new_sentence = input()
+u_t_sentence_for_new_sentence = input(g_u_i)
 
 if u_t_sentence_for_new_sentence.lower() in g_u_answer:
     b_notable_words = ["привет", "как", "дела", "лол", "магия", "прогер", "автоэлектростеклоподъемник"]
@@ -117,6 +120,7 @@ if u_t_sentence_for_new_sentence.lower() in g_u_answer:
     else:
         print("Отлично я знаю парочку слов: ", b_answer_q_1_5)
 else:
+    print("Не хочешь как хочешь")
     b_indicator_dullness = b_indicator_dullness + 1
 # /Задание 1.5
 
@@ -125,13 +129,13 @@ else:
 print()
 print("Сейчас я буду пытаться заменить часть строки в предложении")
 print("Введите предложение: ")
-u_t_sentence_for_replase = input()
+u_t_sentence_for_replase = input(g_u_i)
 
 print("Какое словы вы хотите заменить?")
-u_t_world_for_replase = input()
+u_t_world_for_replase = input(g_u_i)
 
 print("А на что вы хотите заменить?")
-u_t_world_to_replase = input()
+u_t_world_to_replase = input(g_u_i)
 
 print()
 bot_t_answer_for_replase = "Я заменил слово, и теперь получилось такое предложение :\n{}"
@@ -141,14 +145,65 @@ print(
         )
     )
 
+
 # /Задание 2 - кончилось
+
+# Задание 2.534233412
+
+print()
+print("Хм, хочешь тоже попробовать менять слова в предложении?")
+u_t_sentence_for_new_sentence = input(g_u_i)
+
+b_list_tasks = [
+    ["а", "a) ", "Сегодня самый ясный день(нет)", "ясный", "пасмурный"],
+    ["б", "б) ", "Много я сегодня написал, но забыл сдать", "но забыл", "и"],
+    ["в", "в) ", "Вчера я узнал очень мало", "мало", "много"],
+    ["г", "г) ", "Завтра я начну работать", "Завтра", "Сегодня"]
+]
+
+u_selected_option = -1
+
+if u_t_sentence_for_new_sentence.lower() in g_u_answer:
+    print("Отлично, теперь выбери предложение: ")
+    print(b_list_tasks[0][1],b_list_tasks[0][2])
+    print(b_list_tasks[1][1],b_list_tasks[1][2])
+    print(b_list_tasks[2][1],b_list_tasks[2][2])
+    print(b_list_tasks[3][1],b_list_tasks[3][2])
+
+    print()
+    u_t_sentence_for_new_sentence = input(g_u_i)
+
+    if u_t_sentence_for_new_sentence == b_list_tasks[0][0]:
+        u_selected_option = 0
+    elif  u_t_sentence_for_new_sentence == b_list_tasks[1][0]:
+        u_selected_option = 1
+    elif  u_t_sentence_for_new_sentence == b_list_tasks[2][0]:
+        u_selected_option = 2
+    elif  u_t_sentence_for_new_sentence == b_list_tasks[3][0]:
+        u_selected_option = 3
+        
+    if u_selected_option == -1:
+        print("Ой, ты выбрать какой-то странный вариант, у меня таких нет. Пока придётся пропускать")
+    else:
+        print("Хорошо, теперь замени слово '{}' на '{}', а я проверю)".format(b_list_tasks[u_selected_option][3], b_list_tasks[u_selected_option][4]))
+        u_t_sentence_for_new_sentence = input(g_u_i)
+        if u_t_sentence_for_new_sentence == b_list_tasks[u_selected_option][2].replace(b_list_tasks[u_selected_option][3], b_list_tasks[u_selected_option][4]):
+            print("Вы отлично справились )")
+        else:
+            print("У тебя ошибочка) Должно было получится '{}'".format(b_list_tasks[u_selected_option][2].replace(b_list_tasks[u_selected_option][3], b_list_tasks[u_selected_option][4])))
+else:
+    print("Думаешь не решишь)")
+    b_indicator_dullness = b_indicator_dullness + 1
+
+# /Задание 2.534233412
 
 # Задание 3 - Не делать, так там требуется цикл котрый мы не учили
 
 # Задание 4 - Так а тут сказали что только 4 слова в предложении, значит делаем без цыклов)
+
 print()
 print("Введите предложение из 4 слов и я определю какое из слов большое:")
-u_t_sentence_for_find_max_world = input()
+u_t_sentence_for_find_max_world = input(g_u_i)
 
 word_with_max_symbols = ""
 words_with_max_world = u_t_sentence_for_find_max_world.split(" ")
@@ -173,6 +228,103 @@ if word_with_max_symbols == "":
 else:
     print("Хе хе, самое большое слово '{}'".format(word_with_max_symbols))
 
-
-
 # /Задание 4 - Конец основным заданиям
+
+
+# Задание 5 - тоже моё задание
+
+print()
+print()
+print("Окей, сейчас будет отступление")
+print("Я хочу поиграть, в угадай число. Выбери число от 1 до 10. У меня будет 3 попытки. Хотите поиграть?")
+
+b_answer_txt = "Это число {}"
+b_task_txt = "это число меньше(м) или больше(б) моего?"
+
+b_answer_num = -1
+
+b_answer_num_min = 1
+b_answer_num_max = 11
+
+u_t_text = input(g_u_i)
+if u_t_text.lower() in g_u_answer:
+    print()
+    print("Окей, значит вы загадали")
+
+    b_a_o = True
+    error = False
+
+    # Шанс 1
+    b_answer_num = randint(b_answer_num_min, b_answer_num_max)
+    print(b_answer_txt.format(b_answer_num))
+    u_t_text = input(g_u_i)
+
+    if u_t_text.lower() in g_u_answer:
+        b_a_o = False
+        print("Ура, с первого раза получилось")
+
+    elif  u_t_text.lower() in g_u_answer_no:
+        print("Жаль что не угодал, а",b_task_txt)
+        u_t_text = input(g_u_i)
+        if u_t_text.lower() == "м":
+            b_answer_num_max = b_answer_num
+        elif u_t_text.lower() == "б":
+            b_answer_num_min = b_answer_num
+        else:
+            b_a_o = False
+            error = True
+    else:
+        b_a_o = False
+        error = True
+
+    # Шанс 2
+    if b_a_o:
+        b_answer_num = randint(b_answer_num_min, b_answer_num_max)
+        print(b_answer_txt.format(b_answer_num))
+        u_t_text = input(g_u_i)
+
+        if u_t_text.lower() in g_u_answer:
+            b_a_o = False
+            print("На второй раз удалось)")
+
+        elif  u_t_text.lower() in g_u_answer_no:
+            print("Жаль что не угодал, а",b_task_txt)
+            u_t_text = input(g_u_i)
+            if u_t_text.lower() == "м":
+                b_answer_num_max = b_answer_num
+            elif u_t_text.lower() == "б":
+                b_answer_num_min = b_answer_num
+            else:
+                b_a_o = False
+                error = True
+        else:
+            b_a_o = False
+            error = True
+
+
+    # Шанс 3
+    if b_a_o:
+        b_answer_num = randint(b_answer_num_min, b_answer_num_max)
+        print(b_answer_txt.format(b_answer_num))
+        u_t_text = input(g_u_i)
+
+        if u_t_text.lower() in g_u_answer:
+            b_a_o = False
+            print("Наконец я угодал")
+        elif u_t_text.lower() in g_u_answer_no:
+            print("Эх, не получилось мне угодать ни разу")
+        else:
+            error = True
+            
+        
+
+    # Что-то пошло не так
+    if error:
+        print("Ой, какая-то ошибка вышла!")
+        error = False
+
+else:
+    b_indicator_dullness = b_indicator_dullness + 1
+    print("Вы на столько скучный, {} раза отказались от участия".format(b_indicator_dullness))
+
+# /Задание 5
