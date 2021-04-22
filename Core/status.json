@@ -1,8 +1,12 @@
 {
     "hw_status" : [
         {
-            "hw_number" : 0,
+            "hw_number" : 1,
             "hw_score" : 15
+        },
+        {
+            "hw_number" : 2,
+            "hw_score" : -1
         }
     ],
     "hw_max_score" : 20
