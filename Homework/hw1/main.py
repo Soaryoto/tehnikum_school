@@ -1,6 +1,10 @@
 from random import randint
 # Напечатал Danila Dumbrovskiy Ivanovich
 
+# Я оставил пометки для учителя чтобы быстро найти заданные задания #teacher_tehnikum_school
+# Пометки
+# В коментариях я разделил весь код на куски. Начала куска это "Задание", а конец "/Задание"
+
 # Простые переменки нужные для процесса
 
 g_u_answer = ["да", "yes", "ok", "ок", "конечно"]
@@ -43,23 +47,23 @@ print()
 
 # /Вступление
 
-# Задание 1 - без разници, есть такое слово или нет
+# Задание 1 - без разници, есть такое слово или нет #teacher_tehnikum_school
 
     
 print("Напиши мне буквы через пробел, а я тебе из него сделаю предложение: ")
 u_t_sentence_for_new_sentence = input(g_u_i)
 
 temp_arr = u_t_sentence_for_new_sentence.split(" ")
+b_a_text = ""
 
-# Далее временные переменные для чисел
-a = temp_arr[0]
-b = temp_arr[int(len(temp_arr) /2)]
-c = temp_arr[int(len(temp_arr) / 4 + len(temp_arr) / 2)]
-d = temp_arr[len(temp_arr) -1]
-i = temp_arr[int(len(temp_arr) / 4)]
+for count_words in range(randint(3, 6)):
+    for count_chars in range(randint(2, 6)):
+        index_char = randint(0, len(temp_arr) - 1)
+        b_a_text += temp_arr[index_char]
+    b_a_text += " "
 
 print()
-print("Я создал новые слова: ",(d+i+c+b+a+d).capitalize(), c+d+a+i)
+print("Я создал предложение: ", b_a_text.capitalize())
 
 print("Во, я самый грамотный бот на свете")
 
@@ -74,44 +78,18 @@ if u_t_sentence_for_new_sentence.lower() in g_u_answer:
     b_notable_words = ["привет", "как", "дела", "лол", "магия", "прогер", "автоэлектростеклоподъемник"]
     b_answer_q_1_5 = ""
 
-    temp_t = b_notable_words[0] # В условии не хочу использовать длинную переменную
-    if temp_t[0] in temp_arr and temp_t[1] in temp_arr and temp_t[2] in temp_arr and temp_t[3] in temp_arr and temp_t[4] in temp_arr and temp_t[5] in temp_arr:
-        b_answer_q_1_5 = b_answer_q_1_5 + temp_t
+    for word in b_notable_words:
+        have_this_word = True
+        for char in word:
+            if char not in temp_arr:
+                have_this_word = False
 
-    temp_t = b_notable_words[1]
-    if temp_t[0] in temp_arr and temp_t[1] in temp_arr:
-        if b_answer_q_1_5 == "":
-            b_answer_q_1_5 = b_answer_q_1_5 + temp_t
-        else:
-            b_answer_q_1_5 = b_answer_q_1_5 + " " + temp_t
+        if have_this_word:
+            if b_answer_q_1_5 == "":
+                b_answer_q_1_5 += word
+            else:
+                b_answer_q_1_5 += " " + word
         
-    temp_t = b_notable_words[2]
-    if temp_t[0] in temp_arr and temp_t[1] in temp_arr and temp_t[2] in temp_arr and temp_t[3] in temp_arr:
-        if b_answer_q_1_5 == "":
-            b_answer_q_1_5 = b_answer_q_1_5 + temp_t
-        else:
-            b_answer_q_1_5 = b_answer_q_1_5 + " " + temp_t
-
-    temp_t = b_notable_words[3]
-    if temp_t[0] in temp_arr and temp_t[1] in temp_arr:
-        if b_answer_q_1_5 == "":
-            b_answer_q_1_5 = b_answer_q_1_5 + temp_t
-        else:
-            b_answer_q_1_5 = b_answer_q_1_5 + " " + temp_t
-        
-    temp_t = b_notable_words[4]
-    if temp_t[0] in temp_arr and temp_t[1] in temp_arr and temp_t[2] in temp_arr and temp_t[3] in temp_arr and temp_t[4] in temp_arr:
-        if b_answer_q_1_5 == "":
-            b_answer_q_1_5 = b_answer_q_1_5 + temp_t
-        else:
-            b_answer_q_1_5 = b_answer_q_1_5 + " " + temp_t
-
-    temp_t = b_notable_words[5]
-    if temp_t[0] in temp_arr and temp_t[1] in temp_arr and temp_t[2] in temp_arr and temp_t[3] in temp_arr and temp_t[4] in temp_arr and temp_t[5] in temp_arr:
-        if b_answer_q_1_5 == "":
-            b_answer_q_1_5 = b_answer_q_1_5 + temp_t
-        else:
-            b_answer_q_1_5 = b_answer_q_1_5 + " " + temp_t
 
     if b_answer_q_1_5 == "":
         print("Ой, я не знаю ни одного слово из этих букв")
@@ -124,7 +102,21 @@ else:
     b_indicator_dullness = b_indicator_dullness + 1
 # /Задание 1.5
 
-# Задание 2 - Ща сделаем
+
+# Задание 1.9 - тут задача которой до этого не было #teacher_tehnikum_school
+
+print()
+print("Тут просят проверить на то что является ли ваше предложение палиндромом, введите бысрее предложение и я проверю")
+u_t_for_checks = input(g_u_i)
+
+if u_t_for_checks.lower().replace(" ", "") == u_t_for_checks.lower().replace(" ", "")[::-1]:
+    print("О, знаешь что, твоё предложение является палиндромом")
+else:
+    print("Я тут посмотрел, твоё предлажение не является палиндромом")
+
+# /Задание 1.9
+
+# Задание 2 - Ща сделаем #teacher_tehnikum_school
 
 print()
 print("Сейчас я буду пытаться заменить часть строки в предложении")
@@ -197,36 +189,108 @@ else:
 
 # /Задание 2.534233412
 
-# Задание 3 - Не делать, так там требуется цикл котрый мы не учили
-
-# Задание 4 - Так а тут сказали что только 4 слова в предложении, значит делаем без цыклов)
+# Задание 3 #teacher_tehnikum_school
 
 print()
-print("Введите предложение из 4 слов и я определю какое из слов большое:")
+print("Так, сейчас мы займемся удалением повторяющикся символов из предложения")
+u_t_for_del_chars = input(g_u_i)
+b_t_answer = u_t_for_del_chars.replace(" ", "") # убираем пробелы
+
+for char in b_t_answer:
+    counter = 0
+    for char2 in b_t_answer:
+        if char == char2:
+            counter += 1
+    
+    if counter > 1:
+        b_t_answer = b_t_answer.replace(char, "", counter - 1)
+
+print("Удалил все повторяющиеся буквы, и у меня получилось",b_t_answer)
+
+# /Задание 3
+
+# Задание 3.3 Почему 3.3, просто задачу 3 и 4 уже использовал а между ними еще одна появилась #teacher_tehnikum_school
+
+print()
+print("Введите мне предложение и я исправлю количество пробелов в нем")
+u_t_for_del_gaps = input(g_u_i)
+
+
+# И как же правильно сделать то? Я сделал первый вариан который пришёл в голову
+
+b_t_answer = ""
+u_t_for_del_gaps = u_t_for_del_gaps.split(" ")
+for word in u_t_for_del_gaps:
+    if word != "":
+        if b_t_answer != "":
+            b_t_answer += " " + word
+        else:
+            b_t_answer += word
+
+print("Ок, я отредактировал: ",b_t_answer)
+
+
+# /Задание 3.3
+
+# Задание 3.7 Анологично с задачей 3.3 #teacher_tehnikum_school
+
+print()
+print("Введите предложение в котором я найду номер самых больших слов и выведу вам")
 u_t_sentence_for_find_max_world = input(g_u_i)
+temp_arr = u_t_sentence_for_find_max_world.split(" ")
+max_length = 0
 
-word_with_max_symbols = ""
-words_with_max_world = u_t_sentence_for_find_max_world.split(" ")
-temp_arr = [
-    len(words_with_max_world[0]),
-    len(words_with_max_world[1]),
-    len(words_with_max_world[2]),
-    len(words_with_max_world[3])
-]
+b_t_answer = "Я нашёл самые большие слова, они под номером {}"
+b_t_answer_num = ""
 
-if temp_arr[0] > temp_arr[1] and temp_arr[0] > temp_arr[2] and temp_arr[0] > temp_arr[3]:
-    word_with_max_symbols = words_with_max_world[0]
-elif temp_arr[1] > temp_arr[0] and temp_arr[1] > temp_arr[2] and temp_arr[1] > temp_arr[3]:
-    word_with_max_symbols = words_with_max_world[1]
-elif temp_arr[2] > temp_arr[1] and temp_arr[2] > temp_arr[0] and temp_arr[2] > temp_arr[3]:
-    word_with_max_symbols = words_with_max_world[2]
-elif temp_arr[3] > temp_arr[1] and temp_arr[3] > temp_arr[2] and temp_arr[3] > temp_arr[0]:
-    word_with_max_symbols = words_with_max_world[3]
+for word in temp_arr:
+    if max_length < len(word):
+        max_length = len(word)
 
-if word_with_max_symbols == "":
-    print("Прости, мне нужно было выбрать лишь одно слово, а тут их несколько")
+
+
+for word in temp_arr:
+    if len(word) == max_length:
+        if b_t_answer_num == "":
+            b_t_answer_num += str(temp_arr.index(word) + 1)
+        else:
+            b_t_answer_num += ", " + (temp_arr.index(word) + 1)
+
+print(b_t_answer.format(b_t_answer_num))
+
+# /Задание 3.7
+
+# Задание 4 - Делаем цикл!) #teacher_tehnikum_school
+
+print()
+print("Сейчас я бы хотел найти в вашем предложение большое слово, хотите ли вы использовать предыдущее предложение?")
+u_t_answer = input(g_u_i)
+
+if u_t_answer.lower() in g_u_answer:
+    print("А вы ленивый) Ну хорошо, я возму прошлое предложение")
 else:
-    print("Хе хе, самое большое слово '{}'".format(word_with_max_symbols))
+    print("Ну тогда введите новое предложение и я найду в нем")
+    u_t_sentence_for_find_max_world = input(g_u_i)
+
+words_with_max_world = u_t_sentence_for_find_max_world.split(" ")
+
+counter = 0
+max_length = -1
+max_length_word = ""
+
+for word in words_with_max_world:
+    if max_length < len(word):
+        max_length_word = word
+        max_length = len(word)
+        counter = 1
+    elif max_length == len(word):
+        counter += 1
+    
+
+if counter > 1:
+    print("Прости, мне нужно было выбрать лишь одно слово, а тут их {} шт. Ну а само слово это '{}'".format(counter, max_length_word))
+else:
+    print("Хе хе, самое большое слово '{}'".format(max_length_word))
 
 # /Задание 4 - Конец основным заданиям
 
@@ -351,3 +415,66 @@ else:
     print("Ну да ладно, это был Кот Бонго")
 
 # /Задание 5.5
+
+# Задание 6 Ищем количество строчних и прописных букв, только вот почему только анг? #teacher_tehnikum_school
+print("\nНадеюсь не устали! p.s. я устал)")
+print("Так теперь мне в вашем предложении нужно посчитать количесво строчных и прописных букв")
+
+print("Хотите ли вы использовать прошлое предложение где я искал большие слова?")
+u_t_answer = input(g_u_i)
+u_t_for_count_chars = ""
+
+b_t_answer = "Всего в вашем предложении "
+many_count = ["{} прописных и ", "{} строчных"]
+one_count = ["всего {} прописная и ", "{} строчная"]
+count_big_char = 0
+count_small_char = 0
+
+if u_t_answer.lower() in g_u_answer:
+    print("Замечательно, значит вы уже устали)")
+    u_t_for_count_chars = u_t_sentence_for_find_max_world
+else:
+    print("Ну тогда введите новое предложение и я найду в нем")
+    u_t_for_count_chars = input(g_u_i)
+
+for char in u_t_for_count_chars:
+    if char != "" and char.isalpha() and char.lower() == char:
+        count_small_char += 1
+    elif char != "" and char.isalpha():
+        count_big_char += 1
+
+if count_big_char > 1:
+    b_t_answer += many_count[0].format(count_big_char)
+else:
+    b_t_answer += one_count[0].format(count_big_char)
+    
+if count_small_char > 1:
+    b_t_answer += many_count[1].format(count_small_char)
+else:
+    b_t_answer += one_count[1].format(count_small_char)
+
+print(b_t_answer)
+
+# /Задание 6
+
+
+# Задание 7 #teacher_tehnikum_school
+
+print("Теперь посчитаем количество слов, это самое лёгкое")
+
+print("Хотите так же использовать прошлое предложение?")
+u_t_answer = input(g_u_i)
+u_t_for_count_word = ""
+if u_t_answer.lower() in g_u_answer:
+    u_t_for_count_word = u_t_for_count_chars
+else:
+    print("Ну тогда введите новое предложение")
+    u_t_for_count_word = input(g_u_i)
+
+
+print("В предложении {} слов(о)".format(len(u_t_for_count_word.split(" "))))
+# /Задание 7
+
+print()
+print()
+print("Ну все, все задания были выполнены")
