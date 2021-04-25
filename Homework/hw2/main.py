@@ -61,6 +61,7 @@ take_u_num = True
 ask_u_take_last_num = True
 funct_end_counter = 0
 u_a_yes = ["да", "yes", "конечно", "угу"]
+error_division_for_0 = False
 
 print()
 print("Это последнее задание, калькулятор двух чисел)")
@@ -72,6 +73,8 @@ if u_t.strip().lower() in u_a_yes:
         u_t = input("Действие: ")
         if u_t.strip().lower() in funct and u_t.strip().lower() != funct[-1]:
             funct_text = u_t.strip().lower()
+            if funct_text == funct[2]:
+                error_division_for_0 = True
             if ask_u_take_last_num and funct_end_counter > 0:
                 u_t = input("Хотите использовать прошлые числа? Чтобы не повторял вопрос введите 'Никогда': ")
                 if u_t.strip().lower() in u_a_yes:
@@ -92,17 +95,21 @@ if u_t.strip().lower() in u_a_yes:
                     if valid_1_num and valid_2_num:
                         num_1 = float(temp_arr[0])
                         num_2 = float(temp_arr[1])
+                        if error_division_for_0 and num_2 == 0:
+                            print("Делить на 0 нельзя")
                         break
                     else:
                         print("Вы непрвельно ввели числа")
                         continue
                 elif u_t.isdigit() or (u_t.split(".")[0].isdigit() and u_t.split(".")[1].isdigit()):
                     num_1 = float(u_t)
-                    print("Окей, введите 2-ое число")
                     while True:
+                        print("Окей, введите 2-ое число")
                         u_t = input("Вы: ")
                         if u_t.isdigit() or (u_t.split(".")[0].isdigit() and u_t.split(".")[1].isdigit()):
                             num_2 = float(u_t)
+                            if error_division_for_0 and num_2 == 0:
+                                print("Делить на 0 нельзя")
                             break
                         else:
                             print("Неправельно ввели")
