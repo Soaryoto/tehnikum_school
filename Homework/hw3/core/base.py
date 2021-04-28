@@ -5,7 +5,6 @@ import ctypes
 import msvcrt
 import subprocess
 import time
-
 from ctypes import wintypes
 
 global_local = "ru"
@@ -79,11 +78,14 @@ def GetInputUsersText():
 def SetViewBlockForInput():
     print("_" * GetWidthConsole())
 
+
+
 def PrintTextWithImage(text, image_name):
-    result = ""
-    
     full_width = GetWidthConsole()
     full_height = GetHeightConsole()
+    text = str(text)
+    result = ""
+    
 
     img_width = 0
     img_height = 0
@@ -154,11 +156,19 @@ def PrintTextWithImage(text, image_name):
             continue
 
         if temp_text == "":
-            temp_text = word
+            if "\n" in word:
+                arr_linese_text.append(word.replace("\n", ""))
+            else:
+                temp_text = word
         else:
             if len(temp_text + " " + word) > text_width:
                 arr_linese_text.append(temp_text)
                 temp_text = word
+            elif "\n" in word:
+                temp_text += " " + word.replace("\n", "")
+                arr_linese_text.append(temp_text)
+                temp_text = ""
+                continue
             else:
                 temp_text += " " + word
     arr_linese_text.append(temp_text)
@@ -217,4 +227,31 @@ def PrintTextWithImage(text, image_name):
 
     print(result)
 
+
+def PrintArrWithImage(first_text, second_text, image_name):
+    temp_arg = ""
+    for e in first_text:
+        temp_arg += str(e) +"\n "
+    temp_arg = second_text +  "\n " + temp_arg
     
+    PrintTextWithImage(temp_arg, image_name)
+    
+
+
+
+def GetString(name):
+    return str(Localization.data.get(global_local).get(name))
+
+def GetInStringArr(name):
+    return Localization.data.get(global_local).get(name)
+
+
+def GetDefaultDataUser():
+    return {
+        "first_name" : None,
+        "second_name" : None,
+        "age" : None,
+        "gender" : None,
+        "email" : None,
+        "phone" : None
+    }
