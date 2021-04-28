@@ -4,6 +4,7 @@ import os
 import ctypes
 import msvcrt
 import subprocess
+import time
 
 from ctypes import wintypes
 
@@ -39,7 +40,28 @@ def FullScreen(lines=None):
                                 cols, lines))
         user32.ShowWindow(hWnd, SW_MAXIMIZE)
 
+def WindLoad():
+    CleareConsole()
+    imgs = Images.img_load
+    width_win = GetWidthConsole()
+    left_padding = int((width_win - imgs.get("width")) / 2)
 
+    temp_image_arr = []
+    temp_arr = []
+
+    for i in range(0, 3):
+        temp_arr = imgs.get(i).split("\n")
+        for i in range(0, len(temp_arr)):
+            temp_arr[i] = (" " * left_padding) + temp_arr[i]
+        temp_image_arr.append("\n".join(temp_arr))
+    
+
+    for i in range(3):
+        for key in range(0, 3):
+            print(temp_image_arr[key])
+            time.sleep(1)
+            CleareConsole()
+        
 
 def CleareConsole():
     os.system('cls')
@@ -66,29 +88,36 @@ def PrintTextWithImage(text, image_name):
     img_width = 0
     img_height = 0
 
+    temp_image = None
     if image_name == "img1":
-        result = Images.img1["view"]
-        img_width = Images.img1["width"]
-        img_height = Images.img1["height"]
+        temp_image = Images.img1
     elif image_name == "img2":
-        result = Images.img2["view"]
-        img_width = Images.img2["width"]
-        img_height = Images.img2["height"]
+        temp_image = Images.img2
     elif image_name == "img3":
-        result = Images.img3["view"]
-        img_width = Images.img3["width"]
-        img_height = Images.img3["height"]
+        temp_image = Images.img3
     elif image_name == "img4":
-        result = Images.img4["view"]
-        img_width = Images.img4["width"]
-        img_height = Images.img4["height"]
+        temp_image = Images.img4
     elif image_name == "img5":
-        result = Images.img5["view"]
-        img_width = Images.img5["width"]
-        img_height = Images.img5["height"]
+        temp_image = Images.img5
+    elif image_name == "img6":
+        temp_image = Images.img6
+    elif image_name == "img7":
+        temp_image = Images.img7
+    elif image_name == "img8":
+        temp_image = Images.img8
+    elif image_name == "img9":
+        temp_image = Images.img9
+    elif image_name == "img10":
+        temp_image = Images.img10
+    elif image_name == "img11":
+        temp_image = Images.img11
     else:
         result = ""
  
+ 
+    result = temp_image["view"]
+    img_width = temp_image["width"]
+    img_height = temp_image["height"]
     # Вариант 1
     #    ┌─────────────────────┐
     #   /  Привет, как дела ?  │
