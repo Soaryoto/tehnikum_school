@@ -31,5 +31,11 @@ time.sleep(1)
 Base.CleareConsole() # Чистим консоль
 
 Base.PrintTextWithImage("Люди очень скучные", "img4")
-Base.GetInputUsersText()
+Base.SetViewBlockForInput()
 time.sleep(1)
+
+
+Base.CleareConsole() # Чистим консоль
+
+Base.PrintTextWithImage("Вот вам сердечко <3", "img5")
+Base.GetInputUsersText()
