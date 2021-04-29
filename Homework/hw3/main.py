@@ -53,6 +53,7 @@ while True:
     user_data["second_name"] = u_t_input
     break
 
+
 # Если успею нужно будет добавить ещё разговоров для взятия инфы. Если девушка то и номерок не забыть
 
 
@@ -141,16 +142,108 @@ while True and end_add_numbers == False:
 # Easy 3
 
 Base.CleareConsole() # Чистим консоль
-Base.PrintTextWithImage(Base.GetString("get_h_task_1_text"), "img8")
+Base.PrintTextWithImage(Base.GetString("get_e_task_3_text"), "img8")
 while True:
     u_t_input = Base.GetInputUsersText()
     if u_t_input.isdigit():
-        pass
+        temp_num = int(u_t_input)
+        Base.CleareConsole() # Чистим консоль
+        Base.PrintTextWithImage(Base.GetString("get_e_task_3_text_1"), "img8")
+        while True:
+            u_t_input = Base.GetInputUsersText()
+            if u_t_input.isdigit():
+                temp_num = int(int(u_t_input) / temp_num)
+                Base.PrintTextWithImage(Base.GetString("get_e_task_3_text_2").format(temp_num, str(temp_num)[::-1]), "img1")
+                Base.SetViewBlockForInput()
+                time.sleep(3)
+                break
+            else:
+                Base.CleareConsole() # Чистим консоль
+                Base.PrintTextWithImage(Base.GetString("get_e_task_3_text_error_num"), "img9")
+                continue
+        break
     else:
-        pass
-
+        Base.CleareConsole() # Чистим консоль
+        Base.PrintTextWithImage(Base.GetString("get_e_task_3_text_error_num"), "img9")
+        continue
 
 # /Easy 3
+
+# Easy 4
+
+Base.CleareConsole() # Чистим консоль
+Base.PrintTextWithImage(Base.GetString("get_e_task_4_text"), "img6")
+u_t_input = Base.GetInputUsersText()
+
+temp_result = ""
+
+temp_result += u_t_input[3:4] + "\n " # Первая строка
+temp_result += u_t_input[-2] + "\n " # Вторая строка
+temp_result += u_t_input[0:6] + "\n " # Третья строка
+temp_result += u_t_input[0:len(u_t_input) - 3] + "\n " # Четвертая строка
+
+temp_text = ""
+for i in range(1, len(u_t_input), 2):
+    temp_text += u_t_input[i]
+temp_result += temp_text + "\n " # Пятая строка
+
+temp_text = ""
+for i in range(0, len(u_t_input), 2):
+    temp_text += u_t_input[i]
+temp_result += temp_text + "\n " # Шестая строка
+
+temp_result += u_t_input[::-1] + "\n " # Седьмая строка
+
+temp_result += u_t_input[::-2] + "\n " # Восьмая строка
+temp_result += str(len(u_t_input)) + "\n " # Восьмая строка
+
+Base.CleareConsole() # Чистим консоль
+Base.PrintTextWithImage(Base.GetString("answer_e_task_4_text").format(temp_result), "img1")
+Base.SetViewBlockForInput()
+time.sleep(10)
+
+# /Easy 4
+
+# Easy 5
+# Не буду его писать, все равно в файле для проверки сделал задание
+# /Easy 5
+
+# Middle 1
+
+
+
+# /Middle 1
+
+# Middle 2
+
+Base.CleareConsole() # Чистим консоль
+Base.PrintTextWithImage(Base.GetString("get_m_task_2_text"), "img8")
+while True:
+    u_t_input = Base.GetInputUsersText()
+    if u_t_input.isdigit():
+        num = int(u_t_input)
+        num_1 = 0
+        for i in range(1, num + 1):
+            num_1 += i
+
+        num_2 = num * (num + 1) / 2
+
+        Base.CleareConsole() # Чистим консоль
+        if num_1 == num_2:
+            Base.PrintTextWithImage(Base.GetString("ansver_m_task_2_text_equal"), "img4")
+        else:
+            Base.PrintTextWithImage(Base.GetString("ansver_m_task_2_text_not_equal").format(num_1, num_2), "img4")
+        
+        Base.SetViewBlockForInput()
+        time.sleep(3)
+        break
+    else:
+        Base.CleareConsole() # Чистим консоль
+        Base.PrintTextWithImage(Base.GetString("get_m_task_2_text_error_num"), "img9")
+        continue
+
+
+# /Middle 2
 
 # Hard 1
 
