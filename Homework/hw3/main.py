@@ -138,6 +138,19 @@ while True and end_add_numbers == False:
 
 # /Easy 2
 
+# Easy 3
+
+Base.CleareConsole() # Чистим консоль
+Base.PrintTextWithImage(Base.GetString("get_h_task_1_text"), "img8")
+while True:
+    u_t_input = Base.GetInputUsersText()
+    if u_t_input.isdigit():
+        pass
+    else:
+        pass
+
+
+# /Easy 3
 
 # Hard 1
 
