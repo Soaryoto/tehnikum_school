@@ -11,11 +11,13 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>This is comment</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget { 
-	background-color: red;
+	background-color: black;
+	border-color: white;
+	color: white;
 }
 QVBoxLayout {
 	margin:  20px;
@@ -31,6 +33,9 @@ QVBoxLayout {
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetMaximumSize</enum>
+    </property>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout">
       <property name="spacing">
@@ -38,14 +43,30 @@ QVBoxLayout {
       </property>
       <item>
        <widget class="QLabel" name="label">
+        <property name="minimumSize">
+         <size>
+          <width>200</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="lineWidth">
          <number>1</number>
         </property>
         <property name="midLineWidth">
-         <number>0</number>
+         <number>1</number>
         </property>
         <property name="text">
          <string/>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPlainTextEdit" name="plainTextEdit">
+        <property name="cursor" stdset="0">
+         <cursorShape>IBeamCursor</cursorShape>
+        </property>
+        <property name="midLineWidth">
+         <number>1</number>
         </property>
        </widget>
       </item>
