@@ -13,7 +13,6 @@ def StartTelegram():
     Core.UI = Ui_Form()
     Core.UI.setupUi(Form)
     Form.show()
-
     Core.UI.pushButton.clicked.connect(SendUserText)
 
     sys.exit(APP.exec_())
