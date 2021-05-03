@@ -25,13 +25,13 @@ class Ui_Form(object):
         self.verticalLayout = QVBoxLayout(self.verticalLayoutWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.listView = QListView(self.verticalLayoutWidget)
-        self.listView.setObjectName(u"listView")
-        self.listView.setStyleSheet(u"QListView {\n"
+        self.listWidget = QListWidget(self.verticalLayoutWidget)
+        self.listWidget.setObjectName(u"listWidget")
+        self.listWidget.setStyleSheet(u"QListWidget {\n"
 "	background-color: rgba(255, 255, 255, 0.5);\n"
 "}")
 
-        self.verticalLayout.addWidget(self.listView)
+        self.verticalLayout.addWidget(self.listWidget)
 
         self.horizontalLayout = QHBoxLayout()
         self.horizontalLayout.setSpacing(0)

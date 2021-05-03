@@ -1,25 +1,18 @@
-from PySide2 import QtWidgets
-from PySide2.QtWidgets import QLabel
-from PySide2.QtGui import QPixmap
-import sys
-from ui import Ui_Form
+from functions import *
 
-app = QtWidgets.QApplication(sys.argv)
+StartTelegram()
 
-Form = QtWidgets.QWidget()
-ui = Ui_Form()
-ui.setupUi(Form)
-Form.show()
+# Теперь у меня собственный Телеграм )
 
-# QListWidgetItem *item = new QListWidgetItem(textEdit->toPlainText());
-# listWidget->addItem(item);
-# textEdit->clear();
+# 1
 
+while True:
+    SendBotText("Введите число для возведения в куб:")
+    num = Core.USER_INPUT
+    if num.isdigit():
+        num = int(num)
+        print("Это число в кубе: ", kub(num))
+        break
+    else:
+        SendBotText("Неправельно ввели число")
 
-# Масштабирование картинки бо блоку label
-pixmap = QPixmap("img.jpg")
-pixmap = pixmap.scaledToWidth(ui.label.width())
-pixmap = pixmap.scaledToHeight(ui.label.height())
-ui.label.setPixmap(pixmap)
-
-sys.exit(app.exec_())

@@ -27,9 +27,9 @@
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QListView" name="listView">
+     <widget class="QListWidget" name="listWidget">
       <property name="styleSheet">
-       <string notr="true">QListView {
+       <string notr="true">QListWidget {
 	background-color: rgba(255, 255, 255, 0.5);
 }</string>
       </property>
