@@ -4,31 +4,15 @@ import sys
 from ui import Ui_Form
 import core as Core
 
-# Это функции для UI
-
-def StartTelegram():
-    APP = QtWidgets.QApplication(sys.argv)
-
-    Form = QtWidgets.QWidget()
-    Core.UI = Ui_Form()
-    Core.UI.setupUi(Form)
-    Form.show()
-    Core.UI.pushButton.clicked.connect(SendUserText)
-
-    sys.exit(APP.exec_())
-
-def SendUserText():
-    Core.USER_INPUT = Core.UI.lineEdit.text()
-    Core.UI.lineEdit.setText("")
-    item = QListWidgetItem("Вы: " + str(Core.USER_INPUT))
-    Core.UI.listWidget.addItem(item)
-
-def SendBotText(text):
-    item = QListWidgetItem("Бот: " + text)
-    Core.UI.listWidget.addItem(item)
-
-
 # А это функции для дз
+
+
+
+# Начало квестов
+
+def StartQuests():
+    item = QListWidgetItem("Бот: " + "Введите число для возведения в куб")
+    Core.UI.listWidget.addItem(item)
 
 # 1
 def kub(a):
@@ -72,3 +56,29 @@ def TakeCount(num):
     num2 = ((num - (num % 10)) // 10)
     print(str(num2) + " десяток(ов)")
     print(str(num1) + " единиц(а)")
+
+# Это функции для UI
+
+def StartTelegram():
+    APP = QtWidgets.QApplication(sys.argv)
+
+    Form = QtWidgets.QWidget()
+    Core.UI = Ui_Form()
+    Core.UI.setupUi(Form)
+    Form.show()
+
+    Core.UI.pushButton.clicked.connect(SendUserText)
+
+    StartQuests()
+
+    sys.exit(APP.exec_())
+
+def SendUserText():
+    Core.USER_INPUT = Core.UI.lineEdit.text()
+    Core.UI.lineEdit.setText("")
+    item = QListWidgetItem("Вы: " + str(Core.USER_INPUT))
+    Core.UI.listWidget.addItem(item)
+
+def SendBotText(text):
+    item = QListWidgetItem("Бот: " + text)
+    Core.UI.listWidget.addItem(item)
