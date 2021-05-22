@@ -70,7 +70,7 @@ class Core:
     @staticmethod
     def SetLocalization(locate, data):
         try:
-            with open(Core.GetMainDir() + "/source/localization/{}.json".format(locate), 'w') as file:
+            with open(Core.GetMainDir() + "/source/localization_new/{}.json".format(locate), 'w+') as file:
                 json.dump(data, file)
         except:
             Core.WriteErrorMes()
@@ -78,12 +78,57 @@ class Core:
         return 0
 
     @staticmethod
-    def GetLocalizationStringRandom(locate, key):
+    def GetRandomLocalizationString(locate, key):
         result = ""
         try:
             result = Core.GetLocalization(locate)
             rand_int = random.randint(0, len(result[key]) - 1)
             result = result[key][rand_int]
+        except:
+            Core.WriteErrorMes()
+            result = "Произошла ошибка, свяжитесь с администратором"
+
+        return result
+
+    @staticmethod
+    def GetLocalizationAnsverType(locate):
+        result = ""
+        try:
+            result = Core.GetLocalization(locate)["DB_Ansver_Types"]
+        except:
+            Core.WriteErrorMes()
+            result = "Произошла ошибка, свяжитесь с администратором"
+
+        return result
+
+    @staticmethod
+    def GetRandomLocalizationAnsver(locate, index):
+        result = ""
+        try:
+            ansvers = Core.GetLocalization(locate)
+            ansvers = ansvers["DB_Ansver_Types"]["Ansver"][index]
+            rand_int = random.randint(0, len(ansvers) - 1)
+            ansverKey = ansvers[rand_int]
+
+            result = Core.GetLocalization(locate)["DB_Ansvers"]
+            rand_int = random.randint(0, len(result[ansverKey]) - 1)
+            result = [result[ansverKey][rand_int], Core.GetRandomStikerAnsver(locate, ansverKey)]
+        except:
+            Core.WriteErrorMes()
+            result = "Произошла ошибка, свяжитесь с администратором"
+
+        return result
+
+    @staticmethod
+    def GetRandomStikerAnsver(locate, key):
+        result = ""
+        try:
+            stickers = Core.GetLocalization(locate)["DB_AnsverSticker"][key]
+            if len(stickers) > 0:
+                rand_int = random.randint(0, len(stickers) - 1)
+                result = stickers[rand_int]
+            else:
+                result = ""
         except:
             Core.WriteErrorMes()
             result = "Произошла ошибка, свяжитесь с администратором"

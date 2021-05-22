@@ -2,8 +2,8 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 from Erie.telegram_core.functions import *
 from Erie.core.core import Core
 
-class TelegramCore:
 
+class TelegramCore:
     __token = ""
     __updater = None
     __dispatcher = None
@@ -15,26 +15,26 @@ class TelegramCore:
     def InitHandlers(self):
         disp = self.__dispatcher
         updt = self.__updater
-        #Begin
+        # Begin
 
-        start_command = CommandHandler(command="start", callback=Start,run_async=True)
-        disp.add_handler(start_command)
+        HandlerStartCommand = CommandHandler(command="start", callback=Start, run_async=True)
+        disp.add_handler(HandlerStartCommand)
 
-        start_command = CommandHandler(command="buttons", callback=CreateButtons,run_async=True)
-        disp.add_handler(start_command)
+        for locate in Core.GetLocalizationTypes():
+            HandlerForLang = CallbackQueryHandler(pattern=locate, callback=SetLangForUser, run_async=True)
+            disp.add_handler(HandlerForLang)
 
 
-        btn_first = CallbackQueryHandler(callback=btnFirstClick)
-        disp.add_handler(btn_first)
+        HendlerAnsverText = MessageHandler(filters=Filters.text, callback=AnsverForText, run_async=True)
+        disp.add_handler(HendlerAnsverText)
 
-        btn_second = CallbackQueryHandler(callback=btnSecondClick)
-        disp.add_handler(btn_second)
-
+        HendlerAnsverForRestType = MessageHandler(filters=Filters.all, callback=AnsverForRestType, run_async=True)
+        disp.add_handler(HendlerAnsverForRestType)
 
         # End
         updt.start_polling(drop_pending_updates=True)
         self.__updater.idle()
 
-    def __exit__(self, exc_type, exc_val, exc_tb): # Работает? Не знаю но оставлю на всякий пожарный
+    def __exit__(self, exc_type, exc_val, exc_tb):  # Работает? Не знаю но оставлю на всякий пожарный
         print("Stop bot")
         self.__updater.idle()

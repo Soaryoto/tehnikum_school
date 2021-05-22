@@ -70,6 +70,31 @@ class Worker:
             result = "Ошибка при выводе имени"
         return result
 
+    def SetLocateFromUser(self, UserId, Locate):
+        query = '''
+            UPDATE {0} SET LANG = "{2}" WHERE ID = {1}
+        '''.format(
+            self.__ConverTableName("USERS"),
+            UserId,
+            Locate
+        )
+        self.ExecuteQuery(query)
+
+    def GetLocateFromUser(self, UserId):
+        result = ""
+        query = '''
+            SELECT LANG FROM {0} WHERE ID = {1}
+        '''.format(
+            self.__ConverTableName("USERS"),
+            UserId
+        )
+
+        tableSource = self.ExecuteQuery(query)
+        if len(tableSource) > 0:
+            result = tableSource[0][0]
+        else:
+            result = "Ошибка при выводе языка"
+        return result
 
 
 
@@ -85,7 +110,7 @@ class Worker:
                 USER_FIRST_NAME STRING,
                 USER_SECOND_NAME STRING,
                 PHONE INTEGER,
-                LANG INTEGER
+                LANG STRING
             )
         '''.format(self.__ConverTableName("USERS"))
         self.ExecuteQuery(query)
