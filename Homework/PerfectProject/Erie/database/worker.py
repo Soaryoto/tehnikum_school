@@ -1,5 +1,6 @@
 import sqlite3
 from Erie.core.core import Core
+from Erie.database import query_scripts as TempQuery
 
 class Worker:
 
@@ -27,28 +28,28 @@ class Worker:
                 result = cursor.execute(query_string).fetchall()
 
             conn.close()
-        except:
-            Core.WriteErrorMes()
+        except Exception as exc:
+            Core.WriteErrorMes(exc.args[0])
 
         return result
 
-    def AddUser(self, UserId, UserName):
-        query = '''
-            SELECT ID FROM {} WHERE ID = {}
-        '''.format(
-            self.__ConverTableName("USERS"),
+    def AddUser(self, UserId, UserName, FirstName = ""):
+        query = TempQuery.find_user_for_id.format(
+            self.__prefix,
             UserId
         )
         data = self.ExecuteQuery(query)
         if len(self.ExecuteQuery(query)) > 0:
             return -1
 
-        query = '''
-            INSERT INTO {0} (ID, USER_NAME, DESIRED_NAME) VALUES ({1}, "{2}", "{2}")
-        '''.format(
-            self.__ConverTableName("USERS"),
+        if FirstName == "":
+            FirstName = UserName
+
+        query = TempQuery.add_user.format(
+            self.__prefix,
             UserId,
-            UserName
+            UserName,
+            FirstName
         )
 
         self.ExecuteQuery(query)
@@ -56,10 +57,8 @@ class Worker:
 
     def GerDesiredName(self, UserId):
         result = ""
-        query = '''
-            SELECT DESIRED_NAME FROM {0} WHERE ID = {1}
-        '''.format(
-            self.__ConverTableName("USERS"),
+        query = TempQuery.get_desire_user_name.format(
+            self.__prefix,
             UserId
         )
 
@@ -71,10 +70,8 @@ class Worker:
         return result
 
     def SetLocateFromUser(self, UserId, Locate):
-        query = '''
-            UPDATE {0} SET LANG = "{2}" WHERE ID = {1}
-        '''.format(
-            self.__ConverTableName("USERS"),
+        query = TempQuery.set_locate_for_user.format(
+            self.__prefix,
             UserId,
             Locate
         )
@@ -82,10 +79,8 @@ class Worker:
 
     def GetLocateFromUser(self, UserId):
         result = ""
-        query = '''
-            SELECT LANG FROM {0} WHERE ID = {1}
-        '''.format(
-            self.__ConverTableName("USERS"),
+        query = TempQuery.get_locate_for_user.format(
+            self.__prefix,
             UserId
         )
 
@@ -96,34 +91,51 @@ class Worker:
             result = "Ошибка при выводе языка"
         return result
 
+    def UserHaveProductsInBascet(self, userId):
+        result = False
 
+        query = TempQuery.get_products_in_basket.format(
+            self.__prefix,
+            userId
+        )
+
+        tableSource = self.ExecuteQuery(query)
+        if len(tableSource) > 0:
+            result = len(tableSource)
+        else:
+            Core.WriteErrorMes(errorText="Ошибка проверки количества продуктов у пользователя id = {}".format(userId))
+
+        return result
+
+    def GetProductsType(self):
+        result = []
+
+        query = TempQuery.get_product_type
+
+        result = self.ExecuteQuery(query)
+
+        return result
 
     def __ValideDatabase(self):
 
         #Таблица с пользователями
-        query = '''
-            CREATE TABLE IF NOT EXISTS {}
-            (
-                ID INT,
-                USER_NAME STRING,
-                DESIRED_NAME STRING,
-                USER_FIRST_NAME STRING,
-                USER_SECOND_NAME STRING,
-                PHONE INTEGER,
-                LANG STRING
-            )
-        '''.format(self.__ConverTableName("USERS"))
+        query = TempQuery.table_users.format(self.__prefix)
         self.ExecuteQuery(query)
 
         #Таблица с активностями пользователя
-        query = '''
-            CREATE TABLE IF NOT EXISTS {}
-            (
-                USER_ID INT,
-                USER_ACTIVITY_TEG STRING,
-                DATE_TIME STRING
-            )
-        '''.format(self.__ConverTableName("USERS_ACTIVITY"))
+        query = TempQuery.table_users_activity.format(self.__prefix)
+        self.ExecuteQuery(query)
+
+        #Таблица с типами товаров
+        query = TempQuery.table_product_types
+        self.ExecuteQuery(query)
+
+        #Таблица с товарами
+        query = TempQuery.table_products
+        self.ExecuteQuery(query)
+
+        #Таблица с карзиной
+        query = TempQuery.table_basket.format(self.__prefix)
         self.ExecuteQuery(query)
 
 

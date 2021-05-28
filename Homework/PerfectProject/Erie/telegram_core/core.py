@@ -1,12 +1,30 @@
+import asyncio
+import datetime
+
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler
 from Erie.telegram_core.functions import *
 from Erie.core.core import Core
 
 
+async def сheckUsers():
+    while True:
+        print("Hello")
+        if datetime.datetime.now().hour == 5:
+            await asyncio.sleep(int(60*60*24))
+        else:
+            hour = 0
+            if datetime.datetime.now().hour > 5:
+                hour = datetime.datetime.now().hour - 5
+                pass
+            else:
+                hour = 5 - datetime.datetime.now().hour
+            await asyncio.sleep(int(60*60*hour))
+
 class TelegramCore:
     __token = ""
     __updater = None
     __dispatcher = None
+
 
     def __init__(self, token):
         self.__updater = Updater(token=token, workers=5)
@@ -28,8 +46,13 @@ class TelegramCore:
         HendlerAnsverText = MessageHandler(filters=Filters.text, callback=AnsverForText, run_async=True)
         disp.add_handler(HendlerAnsverText)
 
+        HendlerAnsverText = MessageHandler(filters=Filters.location, callback=SetUserLocation, run_async=True)
+        disp.add_handler(HendlerAnsverText)
+
         HendlerAnsverForRestType = MessageHandler(filters=Filters.all, callback=AnsverForRestType, run_async=True)
         disp.add_handler(HendlerAnsverForRestType)
+
+        # asyncio.run(сheckUsers)
 
         # End
         updt.start_polling(drop_pending_updates=True)
