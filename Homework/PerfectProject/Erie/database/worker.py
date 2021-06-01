@@ -146,6 +146,37 @@ class Worker:
 
         return result
 
+    def GetUserOrder(self, userId):
+        result = []
+
+        query = TempQuery.get_products_in_basket.format(
+            self.__prefix,
+            userId
+        )
+
+        tableSource = self.ExecuteQuery(query)
+        if len(tableSource) > 0:
+            for productData in tableSource:
+                query = TempQuery.get_product_from_id.format(
+                    productData[0]
+                )
+                result.append(self.ExecuteQuery(query)[0])
+
+
+        return result
+
+    def AddInUserBuscetProduct(self, userId, productId):
+
+        query = TempQuery.add_product_in_basket.format(
+            self.__prefix,
+            userId,
+            productId
+        )
+
+        result = self.ExecuteQuery(query)
+
+        return result
+
 
     def GetProductsType(self):
         result = []

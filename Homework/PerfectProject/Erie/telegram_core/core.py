@@ -50,6 +50,9 @@ class TelegramCore:
         HandlerForLang = CallbackQueryHandler(pattern="product", callback=SelectedProduct, run_async=True)
         disp.add_handler(HandlerForLang)
 
+        HandlerForLang = CallbackQueryHandler(pattern="send_order", callback=TreatmentOrders, run_async=True)
+        disp.add_handler(HandlerForLang)
+
         for locate in Core.GetLocalizationTypes():
             HandlerForLang = CallbackQueryHandler(pattern=locate, callback=SetLangForUser, run_async=True)
             disp.add_handler(HandlerForLang)
@@ -61,9 +64,6 @@ class TelegramCore:
 
         HandlerStartCommand = CommandHandler(command="AddProduct", callback=AddProduct, run_async=True)
         disp.add_handler(HandlerStartCommand)
-
-        HandlerForLang = CallbackQueryHandler(pattern="test", callback=GetUserPhoneNumber, run_async=True)
-        disp.add_handler(HandlerForLang)
 
         #/Admins functions
 

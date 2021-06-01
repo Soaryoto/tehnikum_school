@@ -44,6 +44,10 @@ get_all_product_from_type = '''
     SELECT ID, NAME_PRODUCT, CATEGORY_ID, IMAGE_URL, DATE_TIME_ADD, USER_ID_ADD FROM PRODUCTS WHERE CATEGORY_ID = {0}
 '''
 
+get_product_from_id = '''
+    SELECT ID, NAME_PRODUCT, CATEGORY_ID, IMAGE_URL, DATE_TIME_ADD, USER_ID_ADD FROM PRODUCTS WHERE ID = {0}
+'''
+
 del_product_for_id = '''
     DELETE FROM PRODUCTS WHERE ID = {}
 '''

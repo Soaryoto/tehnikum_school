@@ -87,6 +87,9 @@ def AnsverForText(updater, context):
     if Core.GetRandomLocalizationString(locate, "StartOrder") == data["msg_text"]:
         GetProductsFromUser(updater, context, "types")
         return
+    if Core.GetRandomLocalizationString(locate, "HistoryOrder") == data["msg_text"]:
+        GetOrders(updater, context)
+        return
 
     # Dance)
     if data["msg_text"] in source["Question"][0]:
@@ -201,10 +204,17 @@ def SelectedProduct(updater, context):
 
     else:
         context.bot.delete_message(message_id=data["msg_id"], chat_id=data["chat_id"])
-
+        Worker("tg").AddInUserBuscetProduct(data["user_id"], result[1])
         msg_text = Core.GetRandomLocalizationString(locate, "ProductAdded")
         msg_text = msg_text.format(Core.GetLocalizationProductName(locate, result[2]))
-        context.bot.send_message(chat_id=data["chat_id"], text=msg_text)
+
+        history_order = KeyboardButton(Core.GetRandomLocalizationString(locate, "HistoryOrder"))
+        markup = ReplyKeyboardMarkup([[history_order]], resize_keyboard=True, one_time_keyboard=True)
+
+        if Worker("tg").UserHaveProductsInBascet(data["user_id"]):
+            context.bot.send_message(chat_id=data["chat_id"], text=msg_text, reply_markup=markup)
+        else:
+            context.bot.send_message(chat_id=data["chat_id"], text=msg_text)
         GetProductsFromUser(updater, context, "product " + result[3])
 
 
@@ -244,6 +254,46 @@ def GetProductsFromUser(updater, context, type_data):
 
     # if error
     context.bot.send_message(chat_id=data["chat_id"], text=msg_text)
+
+def GetOrders(updater, context):
+    data = GetDataInUpdater(updater)
+    locate = Worker("tg").GetLocateFromUser(data["user_id"])
+
+    dataOrder = Worker("tg").GetUserOrder(data["user_id"])
+
+    msg_text = "У вас в корзмне:\n"
+    for dataProduct in dataOrder:
+        msg_text += Core.GetLocalizationProductName(locate, str(dataProduct[1])) + "\n"
+
+    markup = InlineKeyboardMarkup([
+            [InlineKeyboardButton(text="Заказать", callback_data="send_order buy")],
+            [InlineKeyboardButton(text="Очистить", callback_data="send_order clear")],
+            [InlineKeyboardButton(text="Вернутся", callback_data="send_order return")]
+    ])
+
+    context.bot.send_message(chat_id=data["chat_id"], text=msg_text, reply_markup=markup)
+
+def TreatmentOrders(updater, context):
+    data = GetDataInUpdater(updater)
+    locate = Worker("tg").GetLocateFromUser(data["user_id"])
+
+    result = str(updater.callback_query.data).split(" ")
+    msg_text = ""
+
+    if result[1] == "return":
+        context.bot.delete_message(message_id=data["msg_id"], chat_id=data["chat_id"])
+        GetProductsFromUser(updater, context, "types")
+    elif result[1] == "clear":
+        context.bot.delete_message(message_id=data["msg_id"], chat_id=data["chat_id"])
+        msg_text = "Ваша карзина очищена"
+        context.bot.send_message(chat_id=data["chat_id"], text=msg_text)
+        context.bot.send_chat_action(chat_id=data["chat_id"], action=telegram.ChatAction.TYPING)
+        time.sleep(1)
+        GetProductsFromUser(updater, context, "types")
+    elif result[1] == "buy":
+        context.bot.delete_message(message_id=data["msg_id"], chat_id=data["chat_id"])
+        msg_text = "Заказ оформлен"
+        context.bot.send_message(chat_id=data["chat_id"], text=msg_text)
 
 
 #functions from add
