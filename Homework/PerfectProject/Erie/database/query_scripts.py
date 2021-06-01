@@ -19,12 +19,29 @@ get_locate_for_user = '''
     SELECT LANG FROM {0}USERS WHERE ID = {1}
 '''
 
+#Queris for users state
+
+create_state_for_user = '''
+    INSERT INTO PRODUCTS (USER_ID, USER_ACTIVITY_TEG, DATE_TIME) VALUES ({0}, "", "{1}")
+'''
+
+set_state_for_user = '''
+    UPDATE {0}USERS_ACTIVITY SET USER_ACTIVITY_TEG = "{2}", DATE_TIME = "{3}" WHERE USER_ID = {1}
+'''
+
+get_state_for_user = '''
+    SELECT USER_ACTIVITY_TEG, DATE_TIME FROM {0}USERS_ACTIVITY WHERE USER_ID = {1}
+'''
 
 
 
 # Queris for products
 add_product = '''
     INSERT INTO PRODUCTS (NAME_PRODUCT, CATEGORY_ID, IMAGE_URL, DATE_TIME_ADD, USER_ID_ADD) VALUES ("{0}", {1}, "{2}", "{3}", {4})
+'''
+
+get_all_product_from_type = '''
+    SELECT ID, NAME_PRODUCT, CATEGORY_ID, IMAGE_URL, DATE_TIME_ADD, USER_ID_ADD FROM PRODUCTS WHERE CATEGORY_ID = {0}
 '''
 
 del_product_for_id = '''
@@ -35,11 +52,11 @@ del_product_for_category = '''
     DELETE FROM PRODUCTS WHERE CATEGORY_ID = {}
 '''
 
-add_product_type = '''
+add_products_type = '''
     INSERT INTO PRODUCT_TYPES (NAME_TYPES, IMAGE_URL, DATE_TIME_ADD, USER_ID_ADD) VALUES ("{0}", "{1}", "{2}", {3})
 '''
 
-get_product_type = '''
+get_all_products_type = '''
     SELECT ID, NAME_TYPES, IMAGE_URL, DATE_TIME_ADD, USER_ID_ADD FROM PRODUCT_TYPES
 '''
 
@@ -103,7 +120,7 @@ table_products = '''
     (
         ID INTEGER PRIMARY KEY,
         NAME_PRODUCT STRING,
-        CATEGORY_ID INT
+        CATEGORY_ID INT,
         IMAGE_URL STRING,
         DATE_TIME_ADD STRING,
         USER_ID_ADD INT

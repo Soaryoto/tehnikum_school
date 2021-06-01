@@ -1,0 +1,8 @@
+{
+  "telegram" : {
+    "token" : "1726691762:AAFcth5NzzvGtHXFBfSP6OXBtuPO44UZnbM",
+    "geo_loc" : "68df36a5-238f-4cfb-b128-f12efed684e4",
+    "sms_token" : "",
+    "sms_url" : "https://api.tehnikum.school/sms/sms.php"
+  }
+}

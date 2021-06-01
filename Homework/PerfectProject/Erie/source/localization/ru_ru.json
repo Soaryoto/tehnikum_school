@@ -4,38 +4,46 @@
   "GoodAddMainInformation": ["Можете начать выбирать товары"],
   "SetLang" : ["Выбери язык"],
   "ErrorUnderstandMsg" : ["Ой, а я не знаю как ответить на это сообщение"],
+  "SelectProductsType" : ["Выберите категорию товаров"],
+  "SelectProduct" : ["Выберите товар"],
+  "ProductAdded" : ["Продукт {} добавлен в корзину"],
   "Hello" : ["Привет, {}. Рада снова с тобой пообщаться"],
+  "Return" : ["Вернуться"],
   "HowAreYou" : ["Как у тебя дела?", "Как у тебя дела {}?"],
   "DontAnderstandThisTypeMsg" : ["Прости, я ещё не понимаю эти сообщения", "Ой, а я не понимаю тебя"],
   "StartOrder" : ["Начать закупку"],
   "HistoryOrder" : ["Корзина"],
-
+  "SendPhoneNumber" : ["Отправить свой контакт"],
   "DB_Ansvers" : {
     "My_name" : ["Меня зовут Эри", "Эри", "Мне дали имя Эри"],
     "Hello" : ["Привет, {}.", "Привет", "Рада видеть тебя)"],
     "Mood_good" : ["Отличное", "Замечательное", "Хорошее"],
     "Mood_normal" : ["Ну вроде бы пойдет", "Нормальное"],
-    "Mood_bad" : ["Плохое", "Эх, сегодня не хорошее"]
+    "Mood_bad" : ["Плохое", "Эх, сегодня не хорошее"],
+    "IdontRun" : ["А я и не убегаю, ты закрепи чат и я не буду убегать"]
   },
   "DB_AnsverSticker" : {
     "My_name" : [],
     "Hello" : ["Hello"],
     "Mood_good" : ["Good", "Good2"],
     "Mood_normal" : ["Normal", "Normal2"],
-    "Mood_bad" : ["Bad", "Bad2"]
+    "Mood_bad" : ["Bad", "Bad2"],
+    "IdontRun" : ["Shyness"]
   },
   "DB_Ansver_Types" : {
       "Question" : [
         ["Танцуем", "Вечеринка"],
         ["Как тебя зовут?", "Как звать?"],
         ["Привет", "Здравствуй", "Здарова"],
-        ["Как дела?"]
+        ["Как дела?"],
+        ["Не убегай", "Куда ты уходишь?", "Куда убежала?"]
       ],
       "Ansver" : [
         ["GetMeDanceMachine"],
         ["My_name"],
         ["Hello"],
-        ["Mood_good", "Mood_normal", "Mood_bad"]
+        ["Mood_good", "Mood_normal", "Mood_bad"],
+        ["IdontRun"]
       ]
   }
 }

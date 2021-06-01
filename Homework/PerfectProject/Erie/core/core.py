@@ -14,7 +14,7 @@ class Core:
     @staticmethod
     def WriteErrorMes(errorText = ""):
         name = datetime.datetime.now().strftime("%Y_%m_%d")
-        mes = "Error " + str(datetime.datetime.now()) + "\n\t"
+        mes = "\nError " + str(datetime.datetime.now()) + "\n\t"
         if errorText != "":
             mes += errorText
         else:
@@ -147,14 +147,56 @@ class Core:
         return result
 
     @staticmethod
-    def GetLocalizationProducts(locate, type):
+    def GetLocalizationProductName(locate, key):
         result = {}
         try:
             with open(Core.GetMainDir() + "/source/products/localization/{}.json".format(locate), 'r', encoding="UTF-8") as file:
                 result = json.loads(file.read())
+                result = result["products_name"][key]["name"]
         except Exception as exc:
             Core.WriteErrorMes(exc.args[0])
-        return result[type]
+        return result
+
+    @staticmethod
+    def GetLocalizationProductsType(locate, key):
+        result = {}
+        try:
+            with open(Core.GetMainDir() + "/source/products/localization/{}.json".format(locate), 'r', encoding="UTF-8") as file:
+                result = json.loads(file.read())["categories_name"][key]
+        except Exception as exc:
+            Core.WriteErrorMes(exc.args[0])
+        return result
+
+    @staticmethod
+    def SeLocalizationProducts(locate, data):
+        try:
+            with open(Core.GetMainDir() + "/source/products/localization/{}.json".format(locate), 'w+') as file:
+                json.dump(data, file)
+        except Exception as exc:
+            Core.WriteErrorMes(exc.args[0])
+            return -1
+        return 0
+
+
+    @staticmethod
+    def AddLocalizationProductsTypeName(locate, key, name):
+        data = Core.GetLocalizationProducts(locate)
+
+        data["categories_name"].update({key: name})
+
+        Core.SeLocalizationProducts(locate, data)
+
+    @staticmethod
+    def AddLocalizationProductName(locate, key, name):
+        data = Core.GetLocalizationProducts(locate)
+
+        data["products_name"].update({key: {
+                "name": name,
+                "comment": ""
+            }
+        })
+
+        Core.SeLocalizationProducts(locate, data)
 
     @staticmethod
     def SendGetQuery(url, params):
@@ -166,17 +208,17 @@ class Core:
         except Exception as ex:
             Core.WriteErrorMes(ex.args[0])
 
-        return json_data;
+        return json_data
 
 
     @staticmethod
     def GetAddressFromCoords(latitude, longitude):
         params = {
-            "apikey": Core.GetTelegramToken(),
+            "apikey": Core.GetGeolocationToken(),
             "format": "json",
             "lang": "ru_RU",
             "kind": "house",
-            "geocode": (latitude, longitude)
+            "geocode": "{},{}".format(latitude, longitude)
         }
 
         data = Core.SendGetQuery(url="http://geocode-maps.yandex.ru/1.x/", params=params)
@@ -184,8 +226,33 @@ class Core:
 
         try:
             addres = data["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]["metaDataProperty"][
-            "GeocoderMetaData"]["AddressDetails"]["Country"]["AddressLine"]
+        "GeocoderMetaData"]["AddressDetails"]["Country"]["AddressLine"]
         except Exception as ex:
             Core.WriteErrorMes(ex.args[0])
 
         return addres
+
+    @staticmethod
+    def GetVoiceAndMusicInSource(name):
+        result = None
+        try:
+            result = open(Core.GetMainDir() + "/source/voice_and_music/{}".format(name), 'rb')
+        except Exception as ex:
+            Core.WriteErrorMes(ex.args[0])
+
+        return result
+
+    @staticmethod
+    def SendSMS(text):
+        result = None
+        url = Core.GetParamInConfig("telegram")["sms_url"]
+        params = {
+            "text": text
+        }
+
+        try:
+            result = requests.post(url=url, params=params)
+        except Exception as ex:
+            Core.WriteErrorMes(ex.args[0])
+
+        return result

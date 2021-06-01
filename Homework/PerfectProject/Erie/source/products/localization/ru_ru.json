@@ -1,8 +1,1 @@
-{
-    "products_name" : {
-      "" : ""
-    },
-    "categories_name" : {
-      "" : ""
-    }
-}
+{"products_name": {"key_product": {"name": "this_name_product", "comment": "this_comment_product"}, "samsung_g_a10s": {"name": "Samsung Galaxy A10s", "comment": ""}, "samsung_g_a72": {"name": "Samsung Galaxy A72", "comment": ""}, "samsung_g_m12": {"name": "Samsung Galaxy M12", "comment": ""}, "xiaomi_redmi_9c": {"name": "Xiaomi Redmi 9C", "comment": ""}, "apple_i_12_mini": {"name": "\u0421\u043c\u0430\u0440\u0442\u0444\u043e\u043d Apple iPhone 12 mini", "comment": ""}}, "categories_name": {"key_categories": "name_categories", "pc": "\u041a\u043e\u043c\u043f\u044c\u044e\u0442\u0435\u0440\u044b", "notebook": "\u041d\u043e\u0443\u0442\u0431\u0443\u043a\u0438", "smartphone": "\u0421\u043c\u0430\u0440\u0442\u0444\u043e\u043d\u044b", "smartphone_accessories": "\u0410\u043a\u0441\u0435\u0441\u0443\u0430\u0440\u044b", "pc_accessories": "\u0410\u043a\u0441\u0435\u0441\u0443\u0430\u0440\u044b", "notebook_accessories": "\u0410\u043a\u0441\u0435\u0441\u0443\u0430\u0440\u044b"}}

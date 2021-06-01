@@ -1,6 +1,6 @@
 import time
 import telegram
-from telegram import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardMarkup, InlineKeyboardButton, User
 from Erie.core.core import Core
 from Erie.database.worker import Worker
 
@@ -16,7 +16,7 @@ def GetDataInUpdater(updater):
         }
 
     if updater.message is not None:
-        result["chat_id"]  = updater.message.chat_id
+        result["chat_id"] = updater.message.chat_id
         result["msg_id"] = updater.message.message_id
         result["msg_text"] = updater.message.text
         result["user_id"] = updater.message.from_user.id
@@ -33,6 +33,12 @@ def GetDataInUpdater(updater):
         result["lang"] = updater.callback_query.from_user.language_code
 
     return result
+
+def GetStateUser(userId):
+    return Worker("tg").GetUserStateFromId(userId)
+
+def SetStateUser(userId, value):
+    return Worker("tg").SetUserStateFromId(userId, value)
 
 def Start(updater, context):
     data = GetDataInUpdater(updater)
@@ -66,7 +72,7 @@ def Start(updater, context):
     if len(btns) > 0:
         context.bot.send_message(text=text_set_lang, chat_id=data["chat_id"], reply_markup=InlineKeyboardMarkup([btns]))
     else:
-        AddProductsButtons(updater, context)
+        AddProductsButtonsInBusket(updater, context)
 
 
 def AnsverForText(updater, context):
@@ -80,13 +86,14 @@ def AnsverForText(updater, context):
     # Temp code
     if Core.GetRandomLocalizationString(locate, "StartOrder") == data["msg_text"]:
         GetProductsFromUser(updater, context, "types")
-
+        return
 
     # Dance)
     if data["msg_text"] in source["Question"][0]:
         stiсker_data = Core.GetSource("telegram_stiсkers_data", "Dance")
+        audio = {"audio": Core.GetVoiceAndMusicInSource("")}
         context.bot.send_sticker(chat_id=data["chat_id"], sticker=stiсker_data)
-        context.bot.send_message(chat_id=data["chat_id"], text="Тут должна быть музыка")
+        context.bot.send_message(chat_id=data["chat_id"], text="Тут должна быть музыка", file=audio)
         return
 
     for i in range(0, len(source["Question"])):
@@ -133,7 +140,20 @@ def SetLangForUser(updater, context):
     Worker("tg").SetLocateFromUser(data["user_id"], locate)
 
     # Start buttons
-    AddProductsButtons(updater, context)
+    AddProductsButtonsInBusket(updater, context)
+
+def CreateBtnSenderPhoneNumber(updater, context):
+    data = GetDataInUpdater(updater)
+    locate = Worker("tg").GetLocateFromUser(data["user_id"])
+
+    send_phone_number = KeyboardButton(text=Core.GetRandomLocalizationString(locate, "SendPhoneNumber"), request_contact=True)
+
+    btnsList = [[send_phone_number]]
+    markup = ReplyKeyboardMarkup(btnsList, resize_keyboard=True, one_time_keyboard=True)
+
+    text = Core.GetRandomLocalizationString(locate, "SendMePhone")
+    context.bot.send_message(text=text, reply_markup=markup, chat_id=data["chat_id"])
+
 
 def GetUserPhoneNumber(updater, context):
     pass
@@ -141,12 +161,12 @@ def GetUserPhoneNumber(updater, context):
 def SetUserLocation(updater, context):
     data = GetDataInUpdater(updater)
 
-    longtude, latitude = updater.message.location.longtude, updater.message.location.latitude
+    longtude, latitude = updater.message.location.longitude, updater.message.location.latitude
 
     msg_text = Core.GetAddressFromCoords(longtude, latitude)
     context.bot.send_message(chat_id=data["chat_id"], text=msg_text)
 
-def AddProductsButtons(updater, context):
+def AddProductsButtonsInBusket(updater, context):
     data = GetDataInUpdater(updater)
 
     locate = Worker("tg").GetLocateFromUser(data["user_id"])
@@ -163,19 +183,111 @@ def AddProductsButtons(updater, context):
 
     context.bot.send_message(text=text, reply_markup=markup, chat_id=data["chat_id"])
 
+def SelectedProductsType(updater, context):
+    data = GetDataInUpdater(updater)
+    result = str(updater.callback_query.data).split(" ")[1]
+    context.bot.delete_message(message_id=data["msg_id"], chat_id=data["chat_id"])
+    GetProductsFromUser(updater, context, "product " + result)
+
+def SelectedProduct(updater, context):
+    data = GetDataInUpdater(updater)
+    locate = Worker("tg").GetLocateFromUser(data["user_id"])
+
+    result = str(updater.callback_query.data).split(" ")
+
+    if result[1] == "return":
+        context.bot.delete_message(message_id=data["msg_id"], chat_id=data["chat_id"])
+        GetProductsFromUser(updater, context, "types")
+
+    else:
+        context.bot.delete_message(message_id=data["msg_id"], chat_id=data["chat_id"])
+
+        msg_text = Core.GetRandomLocalizationString(locate, "ProductAdded")
+        msg_text = msg_text.format(Core.GetLocalizationProductName(locate, result[2]))
+        context.bot.send_message(chat_id=data["chat_id"], text=msg_text)
+        GetProductsFromUser(updater, context, "product " + result[3])
+
+
 def GetProductsFromUser(updater, context, type_data):
     data = GetDataInUpdater(updater)
     locate = Worker("tg").GetLocateFromUser(data["user_id"])
 
-    msg_text = ""
+    msg_text = "Ничего нет из известного("
     btns = []
 
     if type_data == "types":
+        SetStateUser(data["user_id"], "view_product_types")
         temp_data_tables = Worker("tg").GetProductsType()
         for row in temp_data_tables:
-            text_btn = Core.GetLocalizationProducts(locate, "categories_name")
-            btns.append(InlineKeyboardButton(text=text_btn, callback_data= "types_" + str(row[1])))
-    if type_data.startswith("product"):
-        pass
+            text_btn = Core.GetLocalizationProductsType(locate, str(row[1]))
+            btns.append([InlineKeyboardButton(text=text_btn, callback_data="product_types " + str(row[0]))])
 
+    if type_data.startswith("product"):
+        SetStateUser(data["user_id"], "selected_product_types_" + type_data.split(" ")[1])
+        temp_data_tables = Worker("tg").GetProductsForType(type_data.split(" ")[1])
+        for row in temp_data_tables:
+            text_btn = Core.GetLocalizationProductName(locate, str(row[1]))
+            btns.append([InlineKeyboardButton(text=text_btn, callback_data="product {} {} {}".format(str(row[0]), str(row[1]), str(row[2])) )])
+
+        btns.append([InlineKeyboardButton(text=Core.GetRandomLocalizationString(locate, "Return"), callback_data="product return")])
+
+    if len(btns) > 0:
+        markup = InlineKeyboardMarkup(btns)
+        if type_data == "types":
+            msg_text = Core.GetRandomLocalizationString(locate, "SelectProductsType")
+            context.bot.send_message(chat_id=data["chat_id"], text=msg_text, reply_markup=markup)
+            return
+        elif  type_data.startswith("product"):
+            msg_text = Core.GetRandomLocalizationString(locate, "SelectProduct")
+            context.bot.send_message(chat_id=data["chat_id"], text=msg_text, reply_markup=markup)
+            return
+
+    # if error
     context.bot.send_message(chat_id=data["chat_id"], text=msg_text)
+
+
+#functions from add
+
+def AddProductsType(updater, context):
+    data = GetDataInUpdater(updater)
+    locate = Worker("tg").GetLocateFromUser(data["user_id"])
+
+    temd_data = data["msg_text"].replace("/AddProductsType", "").strip().split(" ")
+    try:
+        key = temd_data[0]
+        name = temd_data[1]
+        Worker("tg").AddProductsType(userId=data["user_id"], key=key, name=name, locate=locate)
+    except Exception as ex:
+        Core.WriteErrorMes(ex.args[0])
+
+def AddProduct(updater, context):
+    data = GetDataInUpdater(updater)
+    locate = Worker("tg").GetLocateFromUser(data["user_id"])
+
+    temd_data = data["msg_text"].replace("/AddProduct", "").strip().split(" ")
+    try:
+        key = temd_data[0]
+        name = temd_data[1].replace("_", " ")
+        category = temd_data[2]
+        Worker("tg").AddProduct(userId=data["user_id"], key=key, name=name, category=category, locate=locate)
+    except Exception as ex:
+        Core.WriteErrorMes(ex.args[0])
+
+#functions from tests
+def TestButtons(updater, context):
+    data = GetDataInUpdater(updater)
+    locate = Worker("tg").GetLocateFromUser(data["user_id"])
+
+    temd_data = data["msg_text"].replace("/TestButtons", "").strip().split(" ")
+    count = temd_data[0]
+
+    btnsList = []
+    for i in range(0, int(count)):
+        btnsList.append([InlineKeyboardButton(text="Кнопка" + str(i), callback_data="test btn" + str(i))])
+
+    markup = InlineKeyboardMarkup(btnsList)
+    text = "Тестируем количество кнопок"
+
+    context.bot.send_message(text=text, chat_id=data["chat_id"], reply_markup=markup)
+
+

@@ -37,17 +37,45 @@ class TelegramCore:
 
         HandlerStartCommand = CommandHandler(command="start", callback=Start, run_async=True)
         disp.add_handler(HandlerStartCommand)
+        HandlerStartCommand = CommandHandler(command="SendPhone", callback=CreateBtnSenderPhoneNumber, run_async=True)
+        disp.add_handler(HandlerStartCommand)
+
+        HandlerStartCommand = CommandHandler(command="TestButtons", callback=TestButtons, run_async=True)
+        disp.add_handler(HandlerStartCommand)
+
+
+        HandlerForLang = CallbackQueryHandler(pattern="product_types", callback=SelectedProductsType, run_async=True)
+        disp.add_handler(HandlerForLang)
+
+        HandlerForLang = CallbackQueryHandler(pattern="product", callback=SelectedProduct, run_async=True)
+        disp.add_handler(HandlerForLang)
 
         for locate in Core.GetLocalizationTypes():
             HandlerForLang = CallbackQueryHandler(pattern=locate, callback=SetLangForUser, run_async=True)
             disp.add_handler(HandlerForLang)
 
+        #Admins functions
 
-        HendlerAnsverText = MessageHandler(filters=Filters.text, callback=AnsverForText, run_async=True)
+        HandlerStartCommand = CommandHandler(command="AddProductsType", callback=AddProductsType, run_async=True)
+        disp.add_handler(HandlerStartCommand)
+
+        HandlerStartCommand = CommandHandler(command="AddProduct", callback=AddProduct, run_async=True)
+        disp.add_handler(HandlerStartCommand)
+
+        HandlerForLang = CallbackQueryHandler(pattern="test", callback=GetUserPhoneNumber, run_async=True)
+        disp.add_handler(HandlerForLang)
+
+        #/Admins functions
+
+        HendlerAnsverText = MessageHandler(filters=Filters.contact, callback=GetUserPhoneNumber, run_async=True)
         disp.add_handler(HendlerAnsverText)
 
         HendlerAnsverText = MessageHandler(filters=Filters.location, callback=SetUserLocation, run_async=True)
         disp.add_handler(HendlerAnsverText)
+
+        HendlerAnsverText = MessageHandler(filters=Filters.text, callback=AnsverForText, run_async=True)
+        disp.add_handler(HendlerAnsverText)
+
 
         HendlerAnsverForRestType = MessageHandler(filters=Filters.all, callback=AnsverForRestType, run_async=True)
         disp.add_handler(HendlerAnsverForRestType)
